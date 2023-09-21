@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+
+product:
+  url: http://product-service:8080
+feign:
+  client:
+    config:
+      product:
+        connectionTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
