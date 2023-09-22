@@ -1,0 +1,44 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sales-order
+spec:
+  selector:
+    matchLabels:
+      app: sales-order
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: sales-order
+    spec:
+      containers:
+        - name: sales-order
+          image: 192.168.56.105:30002/sales-order:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sales-order
+  labels:
+    app: sales-order
+spec:
+  ports:
+    - name: service0
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 8080
+  selector:
+    app: sales-order
+  type: NodePort
+
+
+
