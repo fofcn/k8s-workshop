@@ -177,15 +177,96 @@ spec:
 kubectl apply -f sales-order.yml
 ```
 
+# Ingress
+## Nginx-Ingress Deployment
+Deploy Ingress,我们这儿使用Nginx-Ingress.
+Helm方式(建议)：
+```shell
+helm upgrade --install ingress-nginx ingress-nginx \
+  --repo https://kubernetes.github.io/ingress-nginx \
+  --namespace ingress-nginx --create-namespace
+```
+yaml文件方式：
+```shell
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+```
+
+发布完成后我们需要更改Ingress的Service Type为NodePort，因为我们没有LoadBalancer可用，具体方法如下：
+```shell
+# 首选保存nginx-ingress默认vlaues.yml
+helm show values ingress-nginx --repo https://kubernetes.github.io/ingress-nginx > nginx-ingress-values.yml
+
+# 编辑这个values.yml文件,修改Type为NodePort（466行），并配置NodePort http和https端口（473行）
+vim nginx-ingress-values.yml
+458     ipFamilies:
+459       - IPv4
+460     ports:
+461       http: 80
+462       https: 443
+463     targetPorts:
+464       http: http
+465       https: https
+466     type: NodePort
+467     ## type: NodePort
+468     ## nodePorts:
+469     ##   http: 32080
+470     ##   https: 32443
+471     ##   tcp:
+472     ##     8080: 32808
+473     nodePorts:
+474       http: "80"
+475       https: "443"
+476       tcp: {}
+477       udp: {}
+478     external:
+479       enabled: true
+
+# 完成后更新nginx-ingress
+helm upgrade --install ingress-nginx ingress-nginx   --repo https://kubernetes.github.io/ingress-nginx   --namespace ingress-nginx --create-namespace --values nginx-ingress-values.yml
+
+```
+
+## 配置Ingress访问sales-order服务
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sales-ingress
+  annotations:
+    #nginx.ingress.kubernetes.io/rewrite-target: $1
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: "/api/v1/order"
+            backend:
+              service:
+                name: sales-order
+                port:
+                  number: 8080
+
+```
+
+
 # Postman测试
-## 测试curl
+## 测试curl(sales-order NodePort)
 ```shell
 curl --location --request GET 'http://192.168.56.105:8080/api/v1/order/1234/product/name'
+```
+
+## 测试curl(sales-order Ingress)
+```shell
+curl --location --request GET 'http://192.168.56.105/api/v1/order/1234/product/name'
 ```
 
 ## Postman请求
 ![file](https://fofcn.tech:443/wp-content/uploads/2023/09/image-1695292169727.png)
 
+# 参考链接
+1. [k8s Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
+2. [Nginx Ingress Controller Install Guide](https://kubernetes.github.io/ingress-nginx/deploy/)
 
 
 
