@@ -4,11 +4,13 @@
 3. docker配置
 4. 代码克隆
 5. 构建镜像并推送
-6. 部署应用（Ingress）
-7. Postman测试
+6. 部署应用
+7. Ingress
+8. Postman测试
+9. 参考链接
 
-# 私有仓库部署与配置
-## 1. 部署
+# 1. 私有仓库部署与配置
+## 1.1. 部署
 
 ```shell
 kubectl apply -f nexus-storage.yml
@@ -24,7 +26,7 @@ k8s-master   Ready    control-plane   2d2h   v1.28.2
 * 同时需要修改nexus-pv.yml中本地路径
 ![file](https://fofcn.tech:443/wp-content/uploads/2023/09/image-1695290296177.png)
 
-## 2. 登录Nexus
+## 1.2. 登录Nexus
 访问：http://your_host-only_ip:30001.
 
 ![file](https://fofcn.tech:443/wp-content/uploads/2023/09/image-1695290128943.png)
@@ -44,7 +46,7 @@ kubectl exec -it po/{pod_name} bash
 ```
 进入容器后使用cat命令查看指定文件。
 
-## 3. 配置Nexus
+## 1.3. 配置Nexus
 新建三个仓库，分别为：
 * docker-hosted 用于保存私有镜像
 * docker-proxy 用于共有镜像代理
@@ -63,7 +65,7 @@ kubectl exec -it po/{pod_name} bash
 ![file](https://fofcn.tech:443/wp-content/uploads/2023/09/image-1695290818003.png)
 ![file](https://fofcn.tech:443/wp-content/uploads/2023/09/image-1695290860167.png)
 
-# Containerd配置
+# 2. Containerd配置
 编辑Containerd配置文件,增加私有仓库配置
 ```shell
 vim /etc/containerd/config.toml
@@ -94,8 +96,8 @@ systemctl restart containerd
 journalctl -xeu containerd
 ```
 
-# docker配置
-## docker desktop配置
+# 3. docker配置
+## 3.1 docker desktop配置
 如果使用docker desktop作为镜像打包工具，那么需要配置docker daemon.json，增加自己的registry,如截图所示：
 ![file](https://fofcn.tech:443/wp-content/uploads/2023/09/image-1695291706563.png)
 
@@ -113,13 +115,13 @@ vim /etc/docker/daemon.json
 # 重启dokcer服务
 systemctl restart docker
 ```
-# 代码克隆
+# 4. 代码克隆
 克隆demo代码
 ```shell
 git clone https://github.com/fofcn/k8s-workshop.git
 ```
 
-# 构建镜像并推送
+# 5. 构建镜像并推送
 ```shell
 cd sales-order
 docker build . -t sales-order
@@ -128,8 +130,8 @@ docker push 192.168.56.105:30003/sales-order:latest
 ```
 
 
-# 部署应用
-## 编写sales-order yaml
+# 6. 部署应用
+## 6.1 编写sales-order yaml
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -177,8 +179,8 @@ spec:
 kubectl apply -f sales-order.yml
 ```
 
-# Ingress
-## Nginx-Ingress Deployment
+# 7. Ingress
+## 7.1 Nginx-Ingress Deployment
 Deploy Ingress,我们这儿使用Nginx-Ingress.
 Helm方式(建议)：
 ```shell
@@ -226,7 +228,7 @@ helm upgrade --install ingress-nginx ingress-nginx   --repo https://kubernetes.g
 
 ```
 
-## 配置Ingress访问sales-order服务
+## 7.2 配置Ingress访问sales-order服务
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -250,21 +252,21 @@ spec:
 ```
 
 
-# Postman测试
-## 测试curl(sales-order NodePort)
+# 8. Postman测试
+## 8.1 测试curl(sales-order NodePort)
 ```shell
 curl --location --request GET 'http://192.168.56.105:8080/api/v1/order/1234/product/name'
 ```
 
-## 测试curl(sales-order Ingress)
+## 8.2 测试curl(sales-order Ingress)
 ```shell
 curl --location --request GET 'http://192.168.56.105/api/v1/order/1234/product/name'
 ```
 
-## Postman请求
+## 8.3 Postman请求
 ![file](https://fofcn.tech:443/wp-content/uploads/2023/09/image-1695292169727.png)
 
-# 参考链接
+# 9. 参考链接
 1. [k8s Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 2. [Nginx Ingress Controller Install Guide](https://kubernetes.github.io/ingress-nginx/deploy/)
 

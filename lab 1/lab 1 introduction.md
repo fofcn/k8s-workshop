@@ -243,6 +243,7 @@ swapoff -a
 永久关闭
 ```shell
 vim /etc/fstab
+# 注释掉有swap的行
 ```
 开机启动kubelet
 ```shell
