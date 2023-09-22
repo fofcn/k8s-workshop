@@ -1,14 +1,14 @@
 # Overview
-## 1. 安装VirtualBox虚拟机
-## 2. 下载Ubuntu 23 ISO
-## 3. 安装Ubuntu 23 Server系统
-## 4. 安装k8s 
-## 5. 初始化k8s集群
-## 6. 安装Helm
-## 7. 安装k8s网络插件
-## 8. 测试k8s集群
-## 9. FAQ
-## 10. 参考链接
+1. 安装VirtualBox虚拟机
+2. 下载Ubuntu 23 ISO
+3. 安装Ubuntu 23 Server系统
+4. 安装k8s 
+5. 初始化k8s集群
+6. 安装Helm
+7. 安装k8s网络插件
+8. 测试k8s集群
+9. FAQ
+10. 参考链接
 
 # 1. 安装VirtualBox虚拟机
 下载地址:
