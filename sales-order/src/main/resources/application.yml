@@ -11,3 +11,8 @@ feign:
         connectionTimeout: 5000
         readTimeout: 5000
         loggerLevel: full
+
+database:
+  jdbcUrl: jdbc:postgresql://localhost:5432/your_database
+  username: postgres
+  password: postgres

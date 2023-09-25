@@ -5,21 +5,27 @@
 4. AutoScaling
 5. Blue-Green 
 6. Canary
+7. Monitoring
 
 
-# Helm
+# 1. Helm
+## 1.1. 创建一个Chart
 
-# Metric Server
+```shell
+ helm create my-chart
+```
 
-# Rolling Update
+# 2. Metric Server
 
-# AutoScaling
+# 3. Rolling Update
 
-# Blue-Green
+# 4. AutoScaling
 
-# Canary
+# 5. Blue-Green
 
-# Reference Links
+# 5. Canary
+
+# 7. Reference Links
 1. [Introduction to Helm 3 the Package Manager for Kubernetes](https://razorops.com/blog/introduction-to-helm-3-the-package-manager-for-kubernetes/)
 2. [Metric Server README.md](https://github.com/kubernetes-sigs/metrics-server)
 3. [Metrics Server安装以及报错解决](https://blog.csdn.net/liuyanwuyu/article/details/119793631)
