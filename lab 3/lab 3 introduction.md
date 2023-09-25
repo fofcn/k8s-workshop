@@ -5,7 +5,7 @@
 4. AutoScaling
 5. Blue-Green 
 6. Canary
-7. Monitoring
+7. Logging & Monitoring
 
 
 # 1. Helm

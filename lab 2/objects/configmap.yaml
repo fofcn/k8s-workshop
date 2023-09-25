@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+data:
+  appName: nginx
+  logging.conf: |
+    class: test
+    formatter: test
+    level: INFO
+    filename: log.log
