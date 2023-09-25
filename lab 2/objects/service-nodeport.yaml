@@ -1,0 +1,22 @@
+apiVersion: v1 # k8s API version
+kind: Service # Resource type: ClusterIP
+metadata:  # Service metadata
+  name: nginx-service # service name
+  namespace: default # namespace
+  labels:
+    app: nginx # add label to service
+spec:
+  selector:
+    app: nginx  # select all pods with the app:nginx label
+  type: NodePort # service type: NodePort, reachable anywhere
+  ports:
+    - name: web # port name
+      protocol: TCP 
+      port: 33000 # Service port
+      nodePort: 33000 # Service NodePort
+      targetPort: 80 # Port on the target Pod
+    - name: web1
+      protocol: TCP
+      port: 33001
+      nodePort: 33001
+      targetPort: 80
