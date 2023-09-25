@@ -269,6 +269,7 @@ curl --location --request GET 'http://192.168.56.105/api/v1/order/1234/product/n
 # 9. 参考链接
 1. [k8s Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 2. [Nginx Ingress Controller Install Guide](https://kubernetes.github.io/ingress-nginx/deploy/)
+3. [k8s icons](https://github.com/kubernetes/community)
 
 
 
