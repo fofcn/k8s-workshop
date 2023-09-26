@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/configuration/print")
+@RequestMapping("/api/v1/order/configuration/print")
 public class ConfigurationPrinterController {
 
     @Autowired

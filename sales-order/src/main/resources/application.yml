@@ -16,3 +16,6 @@ database:
   jdbcUrl: jdbc:postgresql://localhost:5432/your_database
   username: postgres
   password: postgres
+
+storage:
+  dir: ./
