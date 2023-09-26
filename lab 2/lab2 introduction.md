@@ -133,45 +133,7 @@ docker push 192.168.56.105:30003/sales-order:latest
 # 6. 部署应用
 ## 6.1 编写sales-order yaml
 ```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: sales-order
-spec:
-  selector:
-    matchLabels:
-      app: sales-order
-  replicas: 1
-  minReadySeconds: 10
-  template:
-    metadata:
-      labels:
-        app: sales-order
-    spec:
-      containers:
-        - name: sales-order
-          image: 192.168.56.105:30002/sales-order:latest
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: sales-order
-  labels:
-    app: sales-order
-spec:
-  ports:
-    - name: service0
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
-      nodePort: 8080
-  selector:
-    app: sales-order
-  type: NodePort
 ```
 
 部署到k8s 集群
@@ -230,24 +192,7 @@ helm upgrade --install ingress-nginx ingress-nginx   --repo https://kubernetes.g
 
 ## 7.2 配置Ingress访问sales-order服务
 ```yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: sales-ingress
-  annotations:
-    #nginx.ingress.kubernetes.io/rewrite-target: $1
-spec:
-  ingressClassName: nginx
-  rules:
-    - http:
-        paths:
-          - pathType: Prefix
-            path: "/api/v1/order"
-            backend:
-              service:
-                name: sales-order
-                port:
-                  number: 8080
+
 
 ```
 
