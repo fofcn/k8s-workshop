@@ -251,10 +251,7 @@ Disable swap permanently
 ```shell
 sed -i '/swap/s/^/#/' /etc/fstab
 ```
-Start kubelet on boot
-```shell
-systemctl enable kubelet
-```
+
 
 
 
@@ -268,6 +265,9 @@ After cluster initialized
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+# Start kubelet on boot
+systemctl enable kubelet
 ```
 
 # 6. Install Helm
@@ -323,6 +323,7 @@ kubectl calico -h
 ## 8.1 Verify k8s DNS
 ```shell
 kubectl run curl --image=radial/busyboxplus:curl -it
+
 nslookup kubernetes.default
 ```
 
@@ -380,6 +381,19 @@ spec:
 
 ```
 
+Verify nginx deployment
+```shell
+# option 1
+curl http://localhost:32000
+
+# option 2 
+http://{your_hostonly_ip}:32000
+
+# option 3
+curl http://$(kubectl get svc/nginx-service -o jsonpath='{.spec.clusterIP}:{.spec.ports[0].port}')
+```
+
+
 # 9. FAQ
 1. Nameserver limits exceeded" err="Nameserver limits were exceeded, some nameservers have been omitted, the applied nameserver line is: 10.22.16.2 10.22.16.254 10.245.0.10"
 ```shell
@@ -389,7 +403,7 @@ spec:
 
 2. Enable master acting as Node
 ```shell
-kubectl taint node k8s-master node-role.kubernetes.io/master:NoSchedule-
+kubectl taint node k8s-master node-role.kubernetes.io/control-plane:NoSchedule-
 ```
 
 3. Print join cluster command if you forgot 
@@ -406,6 +420,7 @@ kubectl run curl --image=radial/busyboxplus:curl -it
 ```shell
 journal -xeu kubelet
 journal -xeu kubelet > kubelet.log
+journalctl -u kubelet -n 100 --no-pager
 ```
 
 6. Reset k8s cluster if you encountered problems after you initialized k8s cluster
