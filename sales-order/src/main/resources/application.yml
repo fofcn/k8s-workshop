@@ -1,6 +1,9 @@
 server:
   port: 8080
 
+spring:
+  profiles:
+    active: dev
 
 product:
   url: http://localhost:8081
