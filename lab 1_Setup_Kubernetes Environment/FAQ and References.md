@@ -40,6 +40,12 @@ vim /etc/kubernetes/manifests/kube-apiserver.yaml
 # add - --service-node-port-range=1-65535 
 ```
 
+8. Cannot pull registry.k8s.io/pause:3.8
+   ```shell
+  vim /etc/containerd/config.toml
+   ```
+   please see: [Overriding the sandbox (pause) image](https://kubernetes.io/docs/setup/production-environment/container-runtimes/#override-pause-image-containerd)
+
 
 # Reference Links
 1. [Installing kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)

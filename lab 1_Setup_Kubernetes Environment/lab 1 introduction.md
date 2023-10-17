@@ -259,6 +259,11 @@ sed -i '/swap/s/^/#/' /etc/fstab
 ```shell
 kubeadm init --apiserver-advertise-address=your_host-only-ip --pod-network-cidr=10.244.0.0/16
 ```
+or you can use a configuration yaml:
+```shell
+kubeadm config print init-defaults --component-configs KubeletConfiguration > kubeadm-default-config.yaml
+kubeadm init --config kubeadm-default-config.yaml  -v=5
+```
 
 After cluster initialized
 ```shell
