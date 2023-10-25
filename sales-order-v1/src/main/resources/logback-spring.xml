@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+    <contextName>logback</contextName>
+    <property name="LOG_HOME" value="/app/applog/sales-order"/>
+    <property name="APP_NAME" value="sales-order"></property>
+    <appender name="NO_JSON_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                            "timestamp": "%date{\"yyyy-MM-dd'T'HH:mm:ss,SSSZ\"}",
+                            "log_level": "%level",
+                            "thread": "%thread",
+                            "class_name": "%class",
+                            "line_number": "%line",
+                            "MDC_user_code": "%X{MDC_user_code}",
+                            "message": "%message",
+                            "stack_trace": "%exception"
+                        }
+                    </pattern>
+                </pattern>
+<!--                 <mdc/> -->
+                <stackTrace/>
+            </providers>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${appName}-%d{yyyy-MM-dd}-%i-json.log</fileNamePattern>
+            <MaxHistory>60</MaxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
+        </encoder>
+    </appender>
+
+    <logger name="com.epam.workshop.sales.product" level="INFO"/>
+    <logger name="org.springframework" level="DEBUG"></logger>
+
+<!--     <springProfile name="prod,test"> -->
+<!--         <root level="info"> -->
+<!--             <appender-ref ref="STDOUT"/> -->
+<!--             <appender-ref ref="FILE"/> -->
+<!--         </root> -->
+<!--     </springProfile> -->
+    <springProfile name="dev">
+        <root level="DEBUG">
+<!--             <appender-ref ref="NO_JSON_STDOUT"/> -->
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+</configuration>

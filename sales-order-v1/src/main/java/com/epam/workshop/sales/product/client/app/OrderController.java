@@ -26,7 +26,7 @@ public class OrderController {
 
     @GetMapping("/version")
     public String getOrderProductName() {
-        return "sale-order-v0";
+        return "sale-order-v1";
     }
 
 }
