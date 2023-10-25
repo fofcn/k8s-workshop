@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sales-order-deployment
+  labels:
+    app: sales-order
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sales-order
+  template:
+    metadata:
+      labels:
+        app: sales-order
+    spec:
+      containers:
+        - name: sales-order
+          image: fofcn/sales-order:latest
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sales-order-service
+spec:
+  type: ClusterIP
+  selector:
+    app: sales-order
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

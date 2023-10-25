@@ -1,6 +1,5 @@
 server:
-  port: 8081
-
+  port: 8080
 
 product:
   url: http://product-service:8080

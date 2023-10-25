@@ -6,7 +6,7 @@ spring:
     active: dev
 
 product:
-  url: http://localhost:8081
+  url: http://sales-product-service:8080
 feign:
   client:
     config:
