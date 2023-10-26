@@ -5,6 +5,7 @@ metadata:
   name: sales-order-deployment
   labels:
     app: sales-order
+    version: v1
 spec:
   replicas: 1
   selector:
@@ -18,7 +19,7 @@ spec:
         version: v1
     spec:
       containers:
-        - name: sales-order
+        - name: sales-order-v1
           image: fofcn/sales-order-v1:latest
           ports:
             - containerPort: 8080
