@@ -15,6 +15,7 @@ spec:
     metadata:
       labels:
         app: sales-order
+        version: v1
     spec:
       containers:
         - name: sales-order
@@ -32,5 +33,5 @@ spec:
     app: sales-order
   ports:
     - protocol: TCP
-      port: 80
+      port: 8080
       targetPort: 8080
