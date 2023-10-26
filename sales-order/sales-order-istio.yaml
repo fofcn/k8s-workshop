@@ -36,6 +36,7 @@ spec:
       retries:
         attempts: 3
         perTryTimeout: 3s
+      timeout: 8s
       route:
         - destination:
             host: sales-order-service
