@@ -34,7 +34,7 @@ spec:
             value: 100.0
           fixedDelay: 7s
       retries:
-        attempt: 3
+        attempts: 3
         perTryTimeout: 3s
       route:
         - destination:
