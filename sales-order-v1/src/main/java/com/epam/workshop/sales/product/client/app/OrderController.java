@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.TimeUnit;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/order")
@@ -29,4 +31,11 @@ public class OrderController {
         return "sale-order-v1";
     }
 
+    @GetMapping("/timeout")
+    public String getTimeout() throws InterruptedException {
+        log.info("I'm going to sleep after I returned. v1");
+        TimeUnit.SECONDS.sleep(11);
+        log.info("As you can see, I have timeout if your timeout configuration is 10s. v1");
+        return "timeout";
+    }
 }
