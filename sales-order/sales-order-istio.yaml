@@ -57,7 +57,8 @@ metadata:
 spec:
   host: sales-order-service
   trafficPolicy:
-    simple: LEAST_REQUEST
+    loadBalancer:
+      simple: LEAST_REQUEST
     connectionPolicy:
       connectionPool:
         tcp:
