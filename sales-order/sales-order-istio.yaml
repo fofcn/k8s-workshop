@@ -59,14 +59,13 @@ spec:
   trafficPolicy:
     loadBalancer:
       simple: LEAST_REQUEST
-    connectionPolicy:
-      connectionPool:
-        tcp:
-          maxConnections: 1
-          connectTimeout: 30ms
-          tcpKeepalive:
-            time: 7200s
-            interval: 75s
+    connectionPool:
+      tcp:
+        maxConnections: 1
+        connectTimeout: 30ms
+        tcpKeepalive:
+          time: 7200s
+          interval: 75s
 
   subsets:
     - name: v0
