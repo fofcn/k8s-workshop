@@ -34,9 +34,9 @@ spec:
             value: 100.0
           fixedDelay: 1s
       retries:
-        attempts: 3
-        perTryTimeout: 3s
-      timeout: 8s
+        attempts: 2
+        perTryTimeout: 8s
+      timeout: 24s
       route:
         - destination:
             host: sales-order-service
