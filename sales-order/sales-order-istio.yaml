@@ -32,7 +32,7 @@ spec:
         delay:
           percentage:
             value: 100.0
-          fixedDelay: 7s
+          fixedDelay: 1s
       retries:
         attempts: 3
         perTryTimeout: 3s
