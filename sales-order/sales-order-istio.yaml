@@ -56,6 +56,17 @@ metadata:
   name: sales-order-dr
 spec:
   host: sales-order-service
+  trafficPolicy:
+    simple: LEAST_REQUEST
+    connectionPolicy:
+      connectionPool:
+        tcp:
+          maxConnections: 1
+          connectTimeout: 30ms
+          tcpKeepalive:
+            time: 7200s
+            interval: 75s
+
   subsets:
     - name: v0
       labels:
