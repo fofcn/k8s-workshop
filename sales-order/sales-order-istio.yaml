@@ -27,7 +27,7 @@ spec:
   http:
     - match:
         - uri:
-            prefix: "/sales-order"
+            prefix: "/api/v1/order"
       fault:
         delay:
           percentage:

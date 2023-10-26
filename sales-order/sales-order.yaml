@@ -15,6 +15,7 @@ spec:
     metadata:
       labels:
         app: sales-order
+        version: v0
     spec:
       containers:
         - name: sales-order
