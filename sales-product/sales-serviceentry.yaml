@@ -35,12 +35,12 @@ metadata:
 spec:
   hosts:
     - "*"
-  gateways:
-    - baidu-gateway
   http:
     - match:
         - uri:
-            prefix: "/api/v1/baidu"
+            prefix: /api/v1/baidu
+      rewrite:
+        uri: /
       route:
         - destination:
             host: www.baidu.com
