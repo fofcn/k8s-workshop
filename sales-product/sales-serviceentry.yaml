@@ -1,0 +1,50 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: baidu-ext
+spec:
+  hosts:
+    - www.baidu.com
+  ports:
+    - number: 443
+      name: https-port
+      protocol: HTTPS
+  location: MESH_EXTERNAL
+  resolution: DNS
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: baidu-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: baidu-vs
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - baidu-gateway
+  http:
+    - match:
+        - uri:
+            prefix: "/api/v1/baidu"
+      route:
+        - destination:
+            host: www.baidu.com
+            port:
+              number: 443
+
+---
