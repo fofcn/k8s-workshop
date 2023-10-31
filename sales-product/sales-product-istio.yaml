@@ -1,0 +1,62 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: sales-product-gateway
+spec:
+  selector:
+    istio: ingressgateway # Use Istio default gateway implementation
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: sales-product-vs
+spec:
+  hosts:
+    - "*" # 对所有请求都进行匹配
+  gateways:
+    - sales-product-gateway
+  http:
+    - match:
+        - uri:
+            prefix: "/api/v1/product"
+      route:
+        - destination:
+            host: sales-product-service
+            subset: v0
+            port:
+              number: 8080
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sales-product-dr
+spec:
+  host: sales-product-service
+  trafficPolicy:
+    loadBalancer:
+      simple: LEAST_REQUEST
+    connectionPool:
+      tcp:
+        maxConnections: 1
+        connectTimeout: 30ms
+        tcpKeepalive:
+          time: 7200s
+          interval: 75s
+
+  subsets:
+    - name: v0
+      labels:
+        version: v0
+    - name: v1
+      labels:
+        version: v1
+---
